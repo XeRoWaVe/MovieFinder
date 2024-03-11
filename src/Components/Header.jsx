@@ -3,7 +3,10 @@ import DeleteIcon from '@mui/icons-material/Delete';
 
 const Header = () => {
     return (
-        <span className='w-full cursor-pointer fixed flex justify-center uppercase bg-[#39445a] text-[5vw] pb-[15px] text-white z-100 lg:pt-2 lg:text-[6.4vw] shadow-[0_1px_5px_black] font-[Montserrat]   '><InsertEmoticonIcon fontSize={'large'} />Dopa Dump<DeleteIcon fontSize={'large'} /></span>
+        <div>
+            {/* <img src="./src/assets/dopamine.png" alt="Dopamine Dumpster Logo" className="h-20 w-" /> */}
+        <span className='flex justify-center w-full text-[5vh] border-2 shadow-lg'>Dopamine Dumpster</span>
+        </div>
     )
 }
 
