@@ -34,10 +34,10 @@ function App() {
   const [pages, setPages] = useState(); // Array of pages
 
 
-  if (selectedFilters.length > 0){
-  const encodedFilter = selectedFilters
-    .map((f) => encodeURIComponent(f))
-    .join(",");}
+  // if (selectedFilters.length > 0){
+  // const encodedFilter = selectedFilters
+  //   .map((f) => encodeURIComponent(f))
+  //   .join(",");}
 
 
 
@@ -48,11 +48,11 @@ function App() {
 
 
   
-  console.log(data)
-  const indexOfLastRecord = currentPage * recordsPerPage
-  const indexOfFirstRecord = indexOfLastRecord - recordsPerPage
-  const currentRecords = data.slice(indexOfFirstRecord, indexOfLastRecord)
-  const nPages = Math.ceil(pages / recordsPerPage)
+  // console.log(data)
+  // const indexOfLastRecord = currentPage * recordsPerPage
+  // const indexOfFirstRecord = indexOfLastRecord - recordsPerPage
+  // const currentRecords = data.slice(indexOfFirstRecord, indexOfLastRecord)
+  // const nPages = Math.ceil(pages / recordsPerPage)
 
   const getShows = async () => {
     const data = await fetch(
@@ -188,6 +188,7 @@ function App() {
           filters={filters}
           setSelectedFilters={setSelectedFilters}
           selectedFilters={selectedFilters}
+          setSearch={setSearch}
         />
       )}
       {/* <RouterProvider router={router} />  */}

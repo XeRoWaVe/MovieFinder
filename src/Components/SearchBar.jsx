@@ -6,6 +6,9 @@ const SearchBar = ({setSearch, setSelectedFilters}) => {
   const handleClick = () => {
     setSearch(input);
     setSelectedFilters('')
+    setTimeout(() => {
+      setInput('')
+    }, 1000)
   }
 
   return (
