@@ -1,11 +1,14 @@
 import InsertEmoticonIcon from '@mui/icons-material/InsertEmoticon';
 import DeleteIcon from '@mui/icons-material/Delete';
 
-const Header = () => {
+const Header = ({getMovies, getShows, movies, shows}) => {
+
     return (
-        <div>
+        <div className='flex w-full text-[5vh] bg-blue-950 text-white border-2 shadow-lg font-[Montserrat]'>
             {/* <img src="./src/assets/dopamine.png" alt="Dopamine Dumpster Logo" className="h-20 w-" /> */}
-        <span className='flex justify-center w-full text-[5vh] border-2 shadow-lg'>Dopamine Dumpster</span>
+        <span className='mx-auto'>Dopamine Dumpster</span>
+        {(movies.length > 0) ? <button className='mx-auto text-red-600 ' onClick={getMovies} >Movies</button> : <button className='mx-auto hover:text-red-600' onClick={getMovies} >Movies</button>}
+        {(shows.length > 0) ? <button className='mx-auto text-green-500' onClick={getShows} >Shows</button> : <button className='mx-auto hover:text-green-500' onClick={getShows} >Shows</button>}
         </div>
     )
 }

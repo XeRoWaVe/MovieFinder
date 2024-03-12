@@ -39,6 +39,7 @@ const Filters = ({ filters, setSelectedFilters, selectedFilters }) => {
 
     <>
     <div className="flex justify-center">
+      
       {/* <Select isMulti options={options} isClearable onChange={handleClick}/> */}
       {filters.map((filter, idx) => (
             // <button key={idx} onClick={() => handleFilterButtonClick(filter.id)} className={`${selectedFilters?.includes(filter) ? 'required:bg-red-600' : ''}border-2 rounded-lg p-2 m-2 bg-blue-400 hover:bg-blue-300 hover:shadow-black hover:shadow-sm active:translate-y-[2px] active:outline-offset-4 active:shadow-none active:border active:border-black`}>
@@ -49,7 +50,7 @@ const Filters = ({ filters, setSelectedFilters, selectedFilters }) => {
             
     </div>
     <div className="flex justify-center">
-      <button onClick={handleClear}>Clear</button>
+      <button className="border-2 p-2 px-10 m-2 rounded-2xl hover:translate-y-[2px] hover:shadow-sm hover:shadow-black active:translate-y-[4px] active:shadow-none" onClick={handleClear}>Clear All Selections</button>
       </div>
     </>
   );
