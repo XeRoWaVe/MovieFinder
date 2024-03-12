@@ -4,6 +4,7 @@ import SearchBar from './Components/SearchBar';
 import Movies from './Components/Movies';
 import Filters from './Components/Filters';
 import Pagination from './Components/Pagination';
+import { Route, createBrowserRouter, createRoutesFromElements } from 'react-router-dom';
 
 const options = {
   method: 'GET',
@@ -17,7 +18,7 @@ const options = {
 function App() {
   const [movies, setMovies] = useState([])
   const [filters, setFilters] = useState([])
-  const [filter, setFilter] = useState([])
+  const [selectedFilters, setSelectedFilters] = useState([])
   const [search, setSearch] = useState('')
   const [currentPage, setCurrentPage] = useState(1)
   const [recordsPerPage, setRecordsPerPage] = useState(10)
@@ -25,11 +26,11 @@ function App() {
 
 
 
-  const encodedFilter = filter.map((f) => encodeURIComponent(f)).join(',')
+  const encodedFilter = selectedFilters.map((f) => encodeURIComponent(f)).join(',')
 
-  console.log(encodedFilter)
-  console.log(filter)
-  console.log(data)
+  // console.log(encodedFilter)
+  console.log(filters)
+  // console.log(data)
 
   // const indexOfLastRecord = currentPage * recordsPerPage
   // const indexOfFirstRecord = indexOfLastRecord - recordsPerPage
@@ -57,7 +58,6 @@ function App() {
   }, [currentPage])
 
   const filterMovies = async () => {
-
     const data = await fetch(`https://api.themoviedb.org/3/discover/movie?with_genres=${encodedFilter}`, options)
     const movies = await data.json()
     setMovies(movies.results)
@@ -66,7 +66,7 @@ function App() {
 
   useEffect(() => {
     filterMovies()
-  }, [filter])
+  }, [selectedFilters])
 
 const getSearchMovies = async () => {
   const data = await fetch(`https://api.themoviedb.org/3/search/movie?query=${search}`, options)
@@ -77,8 +77,6 @@ const getSearchMovies = async () => {
 useEffect(() => {
   getSearchMovies()
 }, [search])
-
-
 
 
 
@@ -96,8 +94,8 @@ useEffect(() => {
   return (
     <>
       <Header />
-      <SearchBar setSearch={setSearch} setFilter={setFilter} />
-      <Filters filters={filters} setFilter={setFilter}/>
+      <SearchBar setSearch={setSearch} setSelectedFilters={setSelectedFilters} />
+      {!!filters &&<Filters filters={filters} setSelectedFilters={setSelectedFilters} selectedFilters={selectedFilters}/>}
       <Movies movies={movies} />
       {/* <Pagination currentPage={currentPage} nPages={nPages} setCurrentPage={setCurrentPage} /> */}
 

@@ -1,11 +1,11 @@
 import { useState } from "react";
 
-const SearchBar = ({setSearch, setFilter}) => {
+const SearchBar = ({setSearch, setSelectedFilters}) => {
   const [input, setInput] = useState("");
 
   const handleClick = () => {
     setSearch(input);
-    setFilter('')
+    setSelectedFilters('')
   }
 
   return (
