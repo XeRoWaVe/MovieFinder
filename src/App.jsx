@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import Header from './Components/Header';
 import SearchBar from './Components/SearchBar';
 import Movies from './Components/Movies';
@@ -17,13 +17,19 @@ const options = {
 function App() {
   const [movies, setMovies] = useState([])
   const [filters, setFilters] = useState([])
-  const [filter, setFilter] = useState('')
+  const [filter, setFilter] = useState([])
   const [search, setSearch] = useState('')
   const [currentPage, setCurrentPage] = useState(1)
   const [recordsPerPage, setRecordsPerPage] = useState(10)
   const [data, setData] = useState([])
 
-  
+
+
+  const encodedFilter = filter.map((f) => encodeURIComponent(f)).join(',')
+
+  console.log(encodedFilter)
+  console.log(filter)
+  console.log(data)
 
   // const indexOfLastRecord = currentPage * recordsPerPage
   // const indexOfFirstRecord = indexOfLastRecord - recordsPerPage
@@ -51,7 +57,8 @@ function App() {
   }, [currentPage])
 
   const filterMovies = async () => {
-    const data = await fetch(`https://api.themoviedb.org/3/discover/movie?with_genres=${filter}`, options)
+
+    const data = await fetch(`https://api.themoviedb.org/3/discover/movie?with_genres=${encodedFilter}`, options)
     const movies = await data.json()
     setMovies(movies.results)
   }
@@ -70,6 +77,9 @@ const getSearchMovies = async () => {
 useEffect(() => {
   getSearchMovies()
 }, [search])
+
+
+
 
 
   // const getFilteredMovies = async () => {
