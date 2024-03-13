@@ -1,15 +1,9 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import Header from "./Components/Header";
 import SearchBar from "./Components/SearchBar";
 import Movies from "./Components/Movies";
 import Filters from "./Components/Filters";
-import Pagination from "./Components/Pagination";
-import {
-  Route,
-  RouterProvider,
-  createBrowserRouter,
-  createRoutesFromElements,
-} from "react-router-dom";
+import { useDispatch } from "react-redux";
 
 const options = {
   method: "GET",
@@ -29,30 +23,22 @@ function App() {
   const [selectedFilters, setSelectedFilters] = useState([]); // Array of selected filters
   const [search, setSearch] = useState(""); // String of search input
   const [currentPage, setCurrentPage] = useState(1); // Number of current page
-  const [recordsPerPage, setRecordsPerPage] = useState(10) // Number of records per page
+  const [recordsPerPage, setRecordsPerPage] = useState(20); // Number of records per page
   const [data, setData] = useState([]); // Array of data from API
-  const [pages, setPages] = useState(); // Array of pages
-
-
-  // if (selectedFilters.length > 0){
-  // const encodedFilter = selectedFilters
-  //   .map((f) => encodeURIComponent(f))
-  //   .join(",");}
-
-
+  const [pages, setPages] = useState({}); // Array of pages
+  const dispatch = useDispatch();
 
   // console.log(encodedFilter)
   // console.log(filters);
   // console.log(data)
 
+  let encodedFilter = encodeURIComponent(selectedFilters); // Encoded string of selected filters
 
-
-  
-  // console.log(data)
-  // const indexOfLastRecord = currentPage * recordsPerPage
-  // const indexOfFirstRecord = indexOfLastRecord - recordsPerPage
-  // const currentRecords = data.slice(indexOfFirstRecord, indexOfLastRecord)
-  // const nPages = Math.ceil(pages / recordsPerPage)
+  console.log(pages);
+  // const indexOfLastRecord = currentPage * recordsPerPage;
+  // const indexOfFirstRecord = indexOfLastRecord - recordsPerPage;
+  // const currentRecords = data.slice(indexOfFirstRecord, indexOfLastRecord);
+  // const nPages = Math.ceil(pages.total_pages / recordsPerPage);
 
   const getShows = async () => {
     const data = await fetch(
@@ -61,10 +47,10 @@ function App() {
     );
     const shows = await data.json();
     setShows(shows.results);
-    setSearchShows(true)
-    setSearchMovies(false)
-    setMovies([])
-    setPages(shows.total_pages)
+    setSearchShows(true);
+    setSearchMovies(false);
+    setMovies([]);
+    setPages(shows);
   };
 
   const getFilters = async () => {
@@ -97,15 +83,19 @@ function App() {
     );
     const movies = await data.json();
     setShows([]);
-    setSearchMovies(true)
-    setSearchShows(false)
-    setPages(movies.total_pages)
+    setSearchMovies(true);
+    setSearchShows(false);
+    setPages(movies);
     setMovies(movies.results);
   };
 
   // useEffect(() => {
   //   getMovies()
   // }, [currentPage])
+
+  // useEffect(() => {
+
+  // , [selectedFilters])
 
   const filterMovies = async () => {
     if (movies.length > 0) {
@@ -138,15 +128,16 @@ function App() {
       );
       const movies = await data.json();
       setMovies(movies.results);
-    } if (searchShows)  {
+    }
+    if (searchShows) {
       const data = await fetch(
         `https://api.themoviedb.org/3/search/tv?query=${search}`,
         options
       );
       const shows = await data.json();
       setShows(shows.results);
-    }}
-  
+    }
+  };
 
   useEffect(() => {
     getSearchMovies();
@@ -179,21 +170,23 @@ function App() {
         movies={movies}
         shows={shows}
       />
-      <SearchBar
-        setSearch={setSearch}
-        setSelectedFilters={setSelectedFilters}
-      />
-      {!!filters && (
-        <Filters
-          filters={filters}
-          setSelectedFilters={setSelectedFilters}
-          selectedFilters={selectedFilters}
+      <div className="">
+        <SearchBar
           setSearch={setSearch}
+          setSelectedFilters={setSelectedFilters}
         />
-      )}
-      {/* <RouterProvider router={router} />  */}
-      <Movies movies={movies} shows={shows} />
-      {/* <Pagination currentPage={currentPage} nPages={nPages} setCurrentPage={setCurrentPage} /> */}
+        {!!filters && (
+          <Filters
+            filters={filters}
+            setSelectedFilters={setSelectedFilters}
+            selectedFilters={selectedFilters}
+            setSearch={setSearch}
+          />
+        )}
+        {/* <RouterProvider router={router} />  */}
+        <Movies movies={movies} shows={shows} />
+        {/* <Pagination currentPage={currentPage} nPages={nPages} setCurrentPage={setCurrentPage} /> */}
+      </div>
     </>
   );
 }

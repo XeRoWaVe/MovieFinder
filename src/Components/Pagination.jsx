@@ -16,7 +16,7 @@ const Pagination = ({currentPage, nPages, setCurrentPage}) => {
 
     return (
 <nav>
-            <ul className='pagination justify-content-center'>
+            <ul className='pagination flex justify-content-center'>
                 <li className="page-item"> {/* Previous page button */}
                     <a className="page-link" 
                         onClick={goToPrevPage}  // Click event handler for navigating to previous page

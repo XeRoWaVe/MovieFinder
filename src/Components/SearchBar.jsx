@@ -22,7 +22,7 @@ const SearchBar = ({setSearch, setSelectedFilters}) => {
           onChange={(e) => setInput(e.target.value)}
           className="border-2 shadow-lg rounded-2xl w-[50vw] h-[5vh] p-3"
         />
-        <button onClick={handleClick} className="bg-blue-300 rounded-2xl p-3 h-[5vh] left-[890px] absolute hover:bg-red-400 hover:shadow-inner">Search</button>
+        <button onClick={handleClick} className="bg-blue-400 rounded-2xl p-3 h-[5vh] left-[890px] absolute active:translate-y-[2px] hover:shadow-sm hover:shadow-black active:bg-blue-700">Search</button>
       </div>
     </div>
 
