@@ -1,9 +1,21 @@
-import { useEffect, useState } from "react";
+import {
+  useEffect,
+  useState,
+  useContext,
+  createContext,
+  useCallback,
+} from "react";
 import Header from "./Components/Header";
 import SearchBar from "./Components/SearchBar";
 import Movies from "./Components/Movies";
 import Filters from "./Components/Filters";
 import { useDispatch } from "react-redux";
+import {
+  Route,
+  RouterProvider,
+  createBrowserRouter,
+  createRoutesFromElements,
+} from "react-router-dom";
 
 const options = {
   method: "GET",
@@ -14,42 +26,31 @@ const options = {
   },
 };
 
+// export const ThemeContext = createContext(null);
+
 function App() {
   const [movies, setMovies] = useState([]); // Array of movies from API
   const [shows, setShows] = useState([]); // Array of shows from API
-  const [searchShows, setSearchShows] = useState(false); // Boolean to determine if shows are being searched
-  const [searchMovies, setSearchMovies] = useState(false); // Boolean to determine if movies are being searched
   const [filters, setFilters] = useState([]); // Array of filters from API, either movies or shows
   const [selectedFilters, setSelectedFilters] = useState([]); // Array of selected filters
   const [search, setSearch] = useState(""); // String of search input
   const [currentPage, setCurrentPage] = useState(1); // Number of current page
-  const [recordsPerPage, setRecordsPerPage] = useState(20); // Number of records per page
-  const [data, setData] = useState([]); // Array of data from API
   const [pages, setPages] = useState({}); // Array of pages
-  const dispatch = useDispatch();
-
-  // console.log(encodedFilter)
-  // console.log(filters);
-  // console.log(data)
 
   let encodedFilter = encodeURIComponent(selectedFilters); // Encoded string of selected filters
 
-  console.log(pages);
-  // const indexOfLastRecord = currentPage * recordsPerPage;
-  // const indexOfFirstRecord = indexOfLastRecord - recordsPerPage;
-  // const currentRecords = data.slice(indexOfFirstRecord, indexOfLastRecord);
-  // const nPages = Math.ceil(pages.total_pages / recordsPerPage);
-
   const getShows = async () => {
+    if (movies.length > 0) {
+      setCurrentPage(1)
+    }
     const data = await fetch(
-      "https://api.themoviedb.org/3/discover/tv",
+      `https://api.themoviedb.org/3/discover/tv?page=${currentPage}`,
       options
     );
     const shows = await data.json();
-    setShows(shows.results);
-    setSearchShows(true);
-    setSearchMovies(false);
+    const showResults = shows.results;
     setMovies([]);
+    setShows((prev) => [...prev, ...showResults])
     setPages(shows);
   };
 
@@ -77,25 +78,19 @@ function App() {
   }, [movies, shows]);
 
   const getMovies = async () => {
+    if (shows.length > 0) {
+      setCurrentPage(1)
+    }
     const data = await fetch(
       `https://api.themoviedb.org/3/discover/movie?page=${currentPage}`,
       options
     );
     const movies = await data.json();
+    const movieResults = movies.results;
     setShows([]);
-    setSearchMovies(true);
-    setSearchShows(false);
     setPages(movies);
-    setMovies(movies.results);
-  };
-
-  // useEffect(() => {
-  //   getMovies()
-  // }, [currentPage])
-
-  // useEffect(() => {
-
-  // , [selectedFilters])
+    setMovies((prev) => [...prev, ...movieResults]);
+  }
 
   const filterMovies = async () => {
     if (movies.length > 0) {
@@ -121,21 +116,25 @@ function App() {
   }, [selectedFilters]);
 
   const getSearchMovies = async () => {
-    if (searchMovies) {
-      const data = await fetch(
-        `https://api.themoviedb.org/3/search/movie?query=${search}`,
-        options
-      );
-      const movies = await data.json();
-      setMovies(movies.results);
-    }
-    if (searchShows) {
-      const data = await fetch(
-        `https://api.themoviedb.org/3/search/tv?query=${search}`,
-        options
-      );
-      const shows = await data.json();
-      setShows(shows.results);
+    if (search !== "") {
+      if (movies) {
+        const data = await fetch(
+          `https://api.themoviedb.org/3/search/movie?query=${search}`,
+          options
+        );
+        const movies = await data.json();
+        setMovies(movies.results);
+      }
+      if (shows) {
+        const data = await fetch(
+          `https://api.themoviedb.org/3/search/tv?query=${search}`,
+          options
+        );
+        const shows = await data.json();
+        setShows(shows.results);
+      } else {
+        return;
+      }
     }
   };
 
@@ -143,27 +142,52 @@ function App() {
     getSearchMovies();
   }, [search]);
 
-  // const getFilteredMovies = async () => {
-  //   const data = await fetch(`https://api.themoviedb.org/3/discover/movie?with_genres=${filter}`, options)
-  //   const movies = await data.json()
-  //   setMovies(movies.results)
-  //   console.log(movies)
-  // }
+  useEffect(() => {
+    if (movies.length > 0) {
+      getMovies();
+    }
+    if (shows.length > 0) {
+      getShows();
+    }
+  }, [currentPage]);
 
-  // useEffect(() => {
-  //   getFilteredMovies()
-  // }, [filter])
-
-  // const router = createBrowserRouter(createRoutesFromElements(
-  //   <Route exact path="/" element={<App />}>
-  //     <Route path=":filter" element={<Filters />} />
-  //     <Route path=":search" element={<SearchBar />} />
-  //     <Route path="movies" element={<Movies />} />
-  //   </Route>,
-  // ))
+  // const router = createBrowserRouter(
+  //   createRoutesFromElements(
+  //     <Route exact path="/" element={<App />}>
+  //       <Route
+  //         path="/"
+  //         element={
+  //           <Header
+  //             getShows={getShows}
+  //             getMovies={getMovies}
+  //             movies={movies}
+  //             shows={shows}
+  //           />
+  //         }
+  //       >
+  //         <Route path="movies" element={<Movies movies={movies} />} />
+  //         <Route path="shows" element={<Movies shows={shows} />} />
+  //         <Route path=":filter" element={<Filters filters={filters}
+  //             setSelectedFilters={setSelectedFilters}
+  //             selectedFilters={selectedFilters}
+  //             setSearch={setSearch}/>} />
+  //       </Route>
+  //       <Route
+  //         path=":search"
+  //         element={
+  //           <SearchBar
+  //             setSearch={setSearch}
+  //             setSelectedFilters={setSelectedFilters}
+  //           />
+  //         }
+  //       />
+  //     </Route>
+  //   )
+  // );
 
   return (
     <>
+      {/* // <RouterProvider router={router} /> */}
       <Header
         getShows={getShows}
         getMovies={getMovies}
@@ -184,7 +208,16 @@ function App() {
           />
         )}
         {/* <RouterProvider router={router} />  */}
-        <Movies movies={movies} shows={shows} />
+        {/* <ThemeContext.Provider value={{ movies, shows }}> */}
+        <Movies
+          movies={movies}
+          shows={shows}
+          getMovies={getMovies}
+          getShows={getShows}
+          setCurrentPage={setCurrentPage}
+        />
+        {/* </ThemeContext.Provider> */}
+
         {/* <Pagination currentPage={currentPage} nPages={nPages} setCurrentPage={setCurrentPage} /> */}
       </div>
     </>

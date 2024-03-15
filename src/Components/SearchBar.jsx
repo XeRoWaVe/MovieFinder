@@ -8,6 +8,7 @@ const SearchBar = ({setSearch, setSelectedFilters}) => {
     setSelectedFilters('')
     setTimeout(() => {
       setInput('')
+      setSearch('')
     }, 1000)
   }
 
