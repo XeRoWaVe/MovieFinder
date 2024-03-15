@@ -1,28 +1,46 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useDraggable } from "react-use-draggable-scroll";
 
-function Movies({ movies, shows, getMovies, getShows, setCurrentPage}) {
+function Movies({ movies, shows, setCurrentPage, loading }) {
+  const [stickyClass, setStickyClass] = useState("opacity-0");
   // const ref = useRef(null)
   // const {events} = useDraggable(ref)
   const moviesCoded = encodeURIComponent(movies.title);
   const showsCoded = encodeURIComponent(shows.name);
 
+  useEffect(() => {
+    window.addEventListener("scroll", stickNavigation);
+    return () => {
+      window.removeEventListener("scroll", stickNavigation);
+    };
+  }, [setCurrentPage]);
+
+  const stickNavigation = () => {
+    if (window !== undefined) {
+      let windowHeight = window.scrollY;
+      console.log(windowHeight);
+      windowHeight > 80
+        ? setStickyClass("opacity-100")
+        : setStickyClass("opacity-0");
+    }
+  };
+
   const handleClick = () => {
     setCurrentPage((prev) => prev + 1);
-  }
+  };
 
   const goToTop = () => {
-    window.scrollTo(0, 0)
-  }
-  // bg-[url(`https://images.nightcafe.studio/jobs/T1v50zgUbqSNHKaukWxn/T1v50zgUbqSNHKaukWxn--1--e7w59.jpg?tr=w-1600,c-at_max`)]
+    window.scrollTo(0, 0);
+  };
+  // bg-[url(``)]
 
   return (
     <div className="flex justify-center w-full">
       <div className="">
-        <div className="grid grid-cols-10">
+        <div className="grid grid-cols-10 m-4">
           {movies.length > 0
             ? movies.map((movie) => (
-                <div className={`m-2`} key={movie.id}>
+                <div className={`m-3`} key={movie.id}>
                   <a
                     href={`https://themoviedb.org/movie/${movie.id}-${moviesCoded}`}
                     target="_blank"
@@ -43,13 +61,13 @@ function Movies({ movies, shows, getMovies, getShows, setCurrentPage}) {
               ))
             : shows.length > 0
             ? shows.map((show) => (
-                <div className={`m-2`} key={show.id}>
+                <div className={`m-3`} key={show.id}>
                   <a
                     href={`https://themoviedb.org/tv/${show.id}-${showsCoded}`}
                     target="_blank"
                   >
                     <img
-                      className="rounded-2xl shadow-lg hover:shadow-2xl transition duration-500 ease-in-out transform hover:-translate-y-1 hover:scale-110"
+                      className="rounded-2xl mb-6 shadow-lg hover:shadow-2xl transition duration-500 ease-in-out transform hover:-translate-y-1 hover:scale-110"
                       src={`https://image.tmdb.org/t/p/w500/${show.poster_path}`}
                       alt={show.name}
                     />
@@ -57,14 +75,38 @@ function Movies({ movies, shows, getMovies, getShows, setCurrentPage}) {
                   <span className="flex justify-center line-clamp-2 text-md font-[Montserrat] font-bold tracking-wide">
                     {show.name}
                   </span>
+                  <span className="flex justify-start m-2 font-[Montserrat]">
+                    {show.first_air_date}
+                  </span>
                 </div>
               ))
             : ""}
         </div>
-        {(movies.length > 0 || shows.length > 0) ? <div className="flex justify-between">
-          <button className="bg-red-500 p-3 rounded-lg hover:shadow-md hover:shadow-black mx-auto active:shadow-none" onClick={handleClick}>Load More</button>
-          <button className="bg-blue-400 p-4 rounded-lg hover:shadow-md hover:shadow-black active:shadow-none" onClick={goToTop}>Top</button>
-        </div> : ''}
+        {movies.length > 0 || shows.length > 0 ? (
+          <div className="">
+            <div className="flex justify-center">
+              {!loading ? <button
+                className={`bg-blue-500 p-3 transition-opacity ease-in-out duration-700 ${stickyClass} fixed bottom-[10px] rounded-lg hover:shadow-md hover:shadow-black active:shadow-none`}
+                onClick={handleClick}
+              >
+                Load More
+              </button> : <button
+                className={`bg-blue-500 p-3 fixed transition-opacity ease-in-out duration-700 ${stickyClass} bottom-[10px] rounded-lg hover:shadow-md hover:shadow-black active:shadow-none`}
+                onClick={handleClick}
+              >
+                Loading...
+              </button>}
+            </div>
+            <button
+              className={`transition-opacity ease-in-out duration-700 ${stickyClass} bg-blue-400 bottom-[20px] right-[30px] fixed text-[3vh] rounded-lg hover:shadow-md hover:shadow-black active:shadow-none`}
+              onClick={goToTop}
+            >
+              ⩓
+            </button>
+          </div>
+        ) : (
+          ""
+        )}
       </div>
     </div>
   );

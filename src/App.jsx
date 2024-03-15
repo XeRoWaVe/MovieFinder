@@ -36,13 +36,15 @@ function App() {
   const [search, setSearch] = useState(""); // String of search input
   const [currentPage, setCurrentPage] = useState(1); // Number of current page
   const [pages, setPages] = useState({}); // Array of pages
+  const [isLoading, setIsloading] = useState(false); // Boolean of loading state]
 
   let encodedFilter = encodeURIComponent(selectedFilters); // Encoded string of selected filters
-
+  console.log(shows)
   const getShows = async () => {
     if (movies.length > 0) {
       setCurrentPage(1)
     }
+    setIsloading(true);
     const data = await fetch(
       `https://api.themoviedb.org/3/discover/tv?page=${currentPage}`,
       options
@@ -52,6 +54,7 @@ function App() {
     setMovies([]);
     setShows((prev) => [...prev, ...showResults])
     setPages(shows);
+    setIsloading(false);
   };
 
   const getFilters = async () => {
@@ -81,6 +84,7 @@ function App() {
     if (shows.length > 0) {
       setCurrentPage(1)
     }
+    setIsloading(true);
     const data = await fetch(
       `https://api.themoviedb.org/3/discover/movie?page=${currentPage}`,
       options
@@ -90,6 +94,7 @@ function App() {
     setShows([]);
     setPages(movies);
     setMovies((prev) => [...prev, ...movieResults]);
+    setIsloading(false);
   }
 
   const filterMovies = async () => {
@@ -210,6 +215,7 @@ function App() {
         {/* <RouterProvider router={router} />  */}
         {/* <ThemeContext.Provider value={{ movies, shows }}> */}
         <Movies
+          loading={isLoading}
           movies={movies}
           shows={shows}
           getMovies={getMovies}
