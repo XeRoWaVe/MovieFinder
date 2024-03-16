@@ -1,21 +1,8 @@
-import {
-  useEffect,
-  useState,
-  useContext,
-  createContext,
-  useCallback,
-} from "react";
+import { useEffect, useState } from "react";
 import Header from "./Components/Header";
 import SearchBar from "./Components/SearchBar";
 import Movies from "./Components/Movies";
 import Filters from "./Components/Filters";
-import { useDispatch } from "react-redux";
-import {
-  Route,
-  RouterProvider,
-  createBrowserRouter,
-  createRoutesFromElements,
-} from "react-router-dom";
 
 const options = {
   method: "GET",
@@ -25,8 +12,6 @@ const options = {
       "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIwMmNhYWMxM2QzM2FiNGY2NTczZWZhZjc3MmMyNmJjMyIsInN1YiI6IjY1MDA2NjUxMWJmMjY2MDExYzc4MjU4NSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.mfZLaDd8VJTN9sSVGADmpLH44Ph3Wy-n7U3eAI1y108",
   },
 };
-
-// export const ThemeContext = createContext(null);
 
 function App() {
   const [movies, setMovies] = useState([]); // Array of movies from API
@@ -39,10 +24,10 @@ function App() {
   const [isLoading, setIsloading] = useState(false); // Boolean of loading state]
 
   let encodedFilter = encodeURIComponent(selectedFilters); // Encoded string of selected filters
-  console.log(shows)
+  console.log(shows);
   const getShows = async () => {
     if (movies.length > 0) {
-      setCurrentPage(1)
+      setCurrentPage(1);
     }
     setIsloading(true);
     const data = await fetch(
@@ -52,7 +37,7 @@ function App() {
     const shows = await data.json();
     const showResults = shows.results;
     setMovies([]);
-    setShows((prev) => [...prev, ...showResults])
+    setShows((prev) => [...prev, ...showResults]);
     setPages(shows);
     setIsloading(false);
   };
@@ -82,7 +67,7 @@ function App() {
 
   const getMovies = async () => {
     if (shows.length > 0) {
-      setCurrentPage(1)
+      setCurrentPage(1);
     }
     setIsloading(true);
     const data = await fetch(
@@ -95,7 +80,7 @@ function App() {
     setPages(movies);
     setMovies((prev) => [...prev, ...movieResults]);
     setIsloading(false);
-  }
+  };
 
   const filterMovies = async () => {
     if (movies.length > 0) {
@@ -156,43 +141,8 @@ function App() {
     }
   }, [currentPage]);
 
-  // const router = createBrowserRouter(
-  //   createRoutesFromElements(
-  //     <Route exact path="/" element={<App />}>
-  //       <Route
-  //         path="/"
-  //         element={
-  //           <Header
-  //             getShows={getShows}
-  //             getMovies={getMovies}
-  //             movies={movies}
-  //             shows={shows}
-  //           />
-  //         }
-  //       >
-  //         <Route path="movies" element={<Movies movies={movies} />} />
-  //         <Route path="shows" element={<Movies shows={shows} />} />
-  //         <Route path=":filter" element={<Filters filters={filters}
-  //             setSelectedFilters={setSelectedFilters}
-  //             selectedFilters={selectedFilters}
-  //             setSearch={setSearch}/>} />
-  //       </Route>
-  //       <Route
-  //         path=":search"
-  //         element={
-  //           <SearchBar
-  //             setSearch={setSearch}
-  //             setSelectedFilters={setSelectedFilters}
-  //           />
-  //         }
-  //       />
-  //     </Route>
-  //   )
-  // );
-
   return (
     <>
-      {/* // <RouterProvider router={router} /> */}
       <Header
         getShows={getShows}
         getMovies={getMovies}
@@ -206,7 +156,7 @@ function App() {
           movies={movies}
           shows={shows}
           getShows={getShows}
-        getMovies={getMovies}
+          getMovies={getMovies}
         />
         {!!filters && (
           <Filters
@@ -216,8 +166,6 @@ function App() {
             setSearch={setSearch}
           />
         )}
-        {/* <RouterProvider router={router} />  */}
-        {/* <ThemeContext.Provider value={{ movies, shows }}> */}
         <Movies
           loading={isLoading}
           movies={movies}
@@ -226,9 +174,6 @@ function App() {
           getShows={getShows}
           setCurrentPage={setCurrentPage}
         />
-        {/* </ThemeContext.Provider> */}
-
-        {/* <Pagination currentPage={currentPage} nPages={nPages} setCurrentPage={setCurrentPage} /> */}
       </div>
     </>
   );
