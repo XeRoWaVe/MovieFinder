@@ -203,6 +203,10 @@ function App() {
         <SearchBar
           setSearch={setSearch}
           setSelectedFilters={setSelectedFilters}
+          movies={movies}
+          shows={shows}
+          getShows={getShows}
+        getMovies={getMovies}
         />
         {!!filters && (
           <Filters
