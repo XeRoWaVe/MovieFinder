@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { useDraggable } from "react-use-draggable-scroll";
 
-function Movies({ movies, shows, setCurrentPage, loading, setDisplay, display, setDetails }) {
+function Movies({ movies, shows, setCurrentPage, loading, setDetails }) {
   const [stickyClass, setStickyClass] = useState("opacity-0");
 
   // const ref = useRef(null)
@@ -38,11 +38,11 @@ function Movies({ movies, shows, setCurrentPage, loading, setDisplay, display, s
   return (
     <div className="flex justify-center w-full">
       <div className="">
-        <div className="grid grid-cols-12 m-4">
+        <div className="grid grid-cols-10 m-4">
           {movies.length > 0
             ? movies.map((movie) => (
-                <div className="relative">
-                  <div className={`m-3 bg-stone-50	 rounded-2xl p-2`} key={movie.id}>
+                <div className="relative flex justify-center items-center">
+                  <div className={`m-3 bg-stone-50	z-0  rounded-2xl p-2`} key={movie.id}>
                   <button
                     onClick={() => setDetails({
                       id: movie.id,
@@ -55,16 +55,16 @@ function Movies({ movies, shows, setCurrentPage, loading, setDisplay, display, s
                     target="_blank"
                   >
                     <img
-                      className="rounded-2xl mb-6 shadow-lg hover:shadow-2xl transition duration-500 ease-in-out transform hover:-translate-y-2 hover:scale-110
+                      className="rounded-2xl mb-6 z-10 shadow-lg hover:shadow-2xl transition duration-500 ease-in-out transform hover:-translate-y-2 hover:scale-110
                       active:translate-y-[5.2rem] active:scale-130"
                       src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`}
                       alt={movie.title}
                     />
                   </button>
-                  <span className="flex justify-center line-clamp-2 text-md font-[Montserrat] font-bold tracking-wide">
+                  <span className="flex justify-center z-10 line-clamp-2 text-md font-[Montserrat] font-bold tracking-wide">
                     {movie.title}
                   </span>
-                  <span className="flex justify-start m-2 font-[Montserrat]">
+                  <span className="flex justify-start z-10 m-2 font-[Montserrat]">
                     {movie.release_date}
                   </span>
                 </div>
@@ -73,8 +73,14 @@ function Movies({ movies, shows, setCurrentPage, loading, setDisplay, display, s
             : shows.length > 0
             ? shows.map((show) => (
                 <div className={`m-3 bg-stone-50	 rounded-2xl p-2`} key={show.id}>
-                  <a
-                    href={`https://themoviedb.org/tv/${show.id}-${showsCoded}`}
+                  <button
+                    onClick={() => setDetails({
+                      id: show.id,
+                      title: show.name,
+                      date: show.first_air_date,
+                      overview: show.overview,
+                      poster: show.poster_path
+                    })}
                     target="_blank"
                   >
                     <img
@@ -82,7 +88,7 @@ function Movies({ movies, shows, setCurrentPage, loading, setDisplay, display, s
                       src={`https://image.tmdb.org/t/p/w500/${show.poster_path}`}
                       alt={show.name}
                     />
-                  </a>
+                  </button>
                   <span className="flex justify-center line-clamp-2 text-md font-[Montserrat] font-bold tracking-wide">
                     {show.name}
                   </span>

@@ -13,6 +13,7 @@ const SearchBar = ({
   const handleClick = () => {
     setSearch(input);
     setSelectedFilters("");
+    setInput('')
   };
 
   return (

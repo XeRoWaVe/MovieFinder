@@ -1,11 +1,11 @@
-import { useEffect, useState, useMemo, useReducer } from "react";
+import { useEffect, useState } from "react";
 import Header from "./Components/Header";
 import SearchBar from "./Components/SearchBar";
 import Movies from "./Components/Movies";
 import Filters from "./Components/Filters";
 import { createPortal } from "react-dom";
 import { options } from "./util";
-import Details from "./Components/Details";
+
 
 export default function App() {
   // const [state, dispatch] = useReducer(reducer)
@@ -22,7 +22,8 @@ export default function App() {
   const [details, setDetails] = useState(null);
   const [blur, setBlur] = useState('')
 
-  let encodedFilter = encodeURIComponent(selectedFilters); // Encoded string of selected filters
+  let encodedFilter = encodeURIComponent(selectedFilters)
+  ; // Encoded string of selected filters
 
  useEffect(() => {
     if (details === null) {
@@ -49,6 +50,7 @@ export default function App() {
     setShows((prev) => [...prev, ...showResults]);
     setPages(shows);
     setIsloading(false);
+    console.log
   };
 
   const getFilters = async () => {
