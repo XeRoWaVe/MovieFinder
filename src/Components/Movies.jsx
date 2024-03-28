@@ -1,8 +1,10 @@
 import React, { useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { useDraggable } from "react-use-draggable-scroll";
 
-function Movies({ movies, shows, setCurrentPage, loading }) {
+function Movies({ movies, shows, setCurrentPage, loading, setDisplay, display, setDetails }) {
   const [stickyClass, setStickyClass] = useState("opacity-0");
+
   // const ref = useRef(null)
   // const {events} = useDraggable(ref)
   const moviesCoded = encodeURIComponent(movies.title);
@@ -18,7 +20,6 @@ function Movies({ movies, shows, setCurrentPage, loading }) {
   const stickNavigation = () => {
     if (window !== undefined) {
       let windowHeight = window.scrollY;
-      console.log(windowHeight);
       windowHeight > 80
         ? setStickyClass("opacity-100")
         : setStickyClass("opacity-0");
@@ -37,20 +38,29 @@ function Movies({ movies, shows, setCurrentPage, loading }) {
   return (
     <div className="flex justify-center w-full">
       <div className="">
-        <div className="grid grid-cols-10 m-4">
+        <div className="grid grid-cols-12 m-4">
           {movies.length > 0
             ? movies.map((movie) => (
-                <div className={`m-3`} key={movie.id}>
-                  <a
-                    href={`https://themoviedb.org/movie/${movie.id}-${moviesCoded}`}
+                <div className="relative">
+                  <div className={`m-3 bg-stone-50	 rounded-2xl p-2`} key={movie.id}>
+                  <button
+                    onClick={() => setDetails({
+                      id: movie.id,
+                      title: movie.title,
+                      date: movie.release_date,
+                      overview: movie.overview,
+                      poster: movie.poster_path
+                    })}
+                    // href={`https://themoviedb.org/movie/${movie.id}-${moviesCoded}`}
                     target="_blank"
                   >
                     <img
-                      className="rounded-2xl mb-6 shadow-lg hover:shadow-2xl transition duration-500 ease-in-out transform hover:-translate-y-1 hover:scale-110"
+                      className="rounded-2xl mb-6 shadow-lg hover:shadow-2xl transition duration-500 ease-in-out transform hover:-translate-y-2 hover:scale-110
+                      active:translate-y-[5.2rem] active:scale-130"
                       src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`}
                       alt={movie.title}
                     />
-                  </a>
+                  </button>
                   <span className="flex justify-center line-clamp-2 text-md font-[Montserrat] font-bold tracking-wide">
                     {movie.title}
                   </span>
@@ -58,16 +68,17 @@ function Movies({ movies, shows, setCurrentPage, loading }) {
                     {movie.release_date}
                   </span>
                 </div>
+                </div>
               ))
             : shows.length > 0
             ? shows.map((show) => (
-                <div className={`m-3`} key={show.id}>
+                <div className={`m-3 bg-stone-50	 rounded-2xl p-2`} key={show.id}>
                   <a
                     href={`https://themoviedb.org/tv/${show.id}-${showsCoded}`}
                     target="_blank"
                   >
                     <img
-                      className="rounded-2xl mb-6 shadow-lg hover:shadow-2xl transition duration-500 ease-in-out transform hover:-translate-y-1 hover:scale-110"
+                      className="rounded-2xl mb-6 shadow-lg hover:shadow-2xl transition duration-500 ease-in-out transform hover:-translate-y-1 hover:scale-110 active:translate-y-[5.2rem] active:scale-130"
                       src={`https://image.tmdb.org/t/p/w500/${show.poster_path}`}
                       alt={show.name}
                     />
@@ -130,6 +141,7 @@ function Movies({ movies, shows, setCurrentPage, loading }) {
           ""
         )}
       </div>
+      
     </div>
   );
 }

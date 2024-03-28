@@ -13,10 +13,6 @@ const SearchBar = ({
   const handleClick = () => {
     setSearch(input);
     setSelectedFilters("");
-    setTimeout(() => {
-      setInput("");
-      setSearch("");
-    }, 1000);
   };
 
   return (
@@ -53,17 +49,17 @@ const SearchBar = ({
           </button>
         )}
       </div>
-      <div className=" flex justify-center">
+      <div className=" flex items-center justify-center">
         <input
           type="text"
           placeholder="Search..."
           value={input}
           onChange={(e) => setInput(e.target.value)}
-          className="border-2 shadow-lg rounded-2xl w-[50vw] h-[5vh] p-3 m-4 bg-blue-100  hover:shadow-black hover:shadow-md hover:opacity-25 focus:opacity-100 focus:shadow-xl hover:transition-transform "
+          className="border-2 shadow-lg rounded-2xl w-[50vw] h-[5vh] p-3 m-4 bg-stone-50	  hover:shadow-black hover:shadow-md hover:opacity-25 focus:opacity-100 focus:shadow-xl hover:transition-transform "
         />
         <button
           onClick={handleClick}
-          className="text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py--1 text-center me-2 mb-2 dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:hover:bg-blue-500 dark:focus:ring-blue-800"
+          className=" border-black rounded-2xl h-[7vh] p-2 bg-stone-50 hover:shadow-sm hover:border-2"
         >
           Search
         </button>

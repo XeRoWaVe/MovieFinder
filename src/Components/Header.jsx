@@ -3,8 +3,8 @@ import DeleteIcon from "@mui/icons-material/Delete";
 
 const Header = () => {
   return (
-    <div className="flex w-full text-[4vh] bg-blue-950 py-2 mb-4 font-bold text-white shadow-lg font-[Montserrat]">
-      <span className="mx-auto">Dopamine Dumpster</span>
+    <div className="flex w-full text-[4vh] bg-blue-950 py-2 mb-4 font-bold text-white shadow-lg font-[Chakra+Petch]">
+      <span className="mx-auto" id="title">Dopaminergency</span>
     </div>
   );
 };

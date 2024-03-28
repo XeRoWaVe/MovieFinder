@@ -15,7 +15,7 @@ function Button({ selected, idx, filter, handleFilterButtonClick }) {
         <button
           key={idx}
           onClick={() => handleFilterButtonClick(filter.id)}
-          className={`border-2 rounded-lg p-2 m-2 bg-blue-100  hover:shadow-black hover:shadow-sm active:translate-y-[2px] outline-offset-4 active:shadow-none active:border active:border-black `}
+          className={`border-2 rounded-lg p-2 m-2 bg-stone-50	  hover:shadow-black hover:shadow-sm active:translate-y-[2px] outline-offset-4 active:shadow-none active:border active:border-black `}
         >
           <h3>{filter.name}</h3>
         </button>

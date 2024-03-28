@@ -38,7 +38,7 @@ const Filters = ({
       </div>
       <div className="flex justify-center">
         <button
-          className="border-2 p-2 px-10 m-2 rounded-2xl hover:translate-y-[2px] hover:shadow-sm hover:shadow-black active:translate-y-[4px] active:shadow-none"
+          className="border-2 bg-stone-50	 p-2 px-10 m-2 rounded-2xl hover:translate-y-[2px] hover:shadow-sm hover:shadow-black active:translate-y-[4px] active:shadow-none"
           onClick={handleClear}
         >
           Clear All Selections
