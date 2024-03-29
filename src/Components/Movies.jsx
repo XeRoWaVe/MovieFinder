@@ -42,45 +42,57 @@ function Movies({ movies, shows, setCurrentPage, loading, setDetails }) {
           {movies.length > 0
             ? movies.map((movie) => (
                 <div className="relative flex justify-center items-center">
-                  <div className={`m-3 bg-stone-50	z-0  rounded-2xl p-2`} key={movie.id}>
-                  <button
-                    onClick={() => setDetails({
-                      id: movie.id,
-                      title: movie.title,
-                      date: movie.release_date,
-                      overview: movie.overview,
-                      poster: movie.poster_path
-                    })}
-                    // href={`https://themoviedb.org/movie/${movie.id}-${moviesCoded}`}
-                    target="_blank"
+                  <div
+                    className={`m-3 bg-stone-50	z-0  rounded-2xl p-2`}
+                    key={movie.id}
                   >
-                    <img
-                      className="rounded-2xl mb-6 z-10 shadow-lg hover:shadow-2xl transition duration-500 ease-in-out transform hover:-translate-y-2 hover:scale-110
+                    <button
+                      onClick={() =>
+                        setDetails({
+                          id: movie.id,
+                          title: movie.title,
+                          date: movie.release_date,
+                          overview: movie.overview,
+                          poster: movie.poster_path,
+                          backdrop: movie.backdrop_path,
+                        })
+                      }
+                      // href={`https://themoviedb.org/movie/${movie.id}-${moviesCoded}`}
+                      target="_blank"
+                    >
+                      <img
+                        className="rounded-2xl mb-6 z-10 shadow-lg hover:shadow-2xl transition duration-500 ease-in-out transform hover:-translate-y-2 hover:scale-110
                       active:translate-y-[5.2rem] active:scale-130"
-                      src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`}
-                      alt={movie.title}
-                    />
-                  </button>
-                  <span className="flex justify-center z-10 line-clamp-2 text-md font-[Montserrat] font-bold tracking-wide">
-                    {movie.title}
-                  </span>
-                  <span className="flex justify-start z-10 m-2 font-[Montserrat]">
-                    {movie.release_date}
-                  </span>
-                </div>
+                        src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`}
+                        alt={movie.title}
+                      />
+                    </button>
+                    <span className="flex justify-center z-10 line-clamp-2 text-md font-[Montserrat] font-bold tracking-wide">
+                      {movie.title}
+                    </span>
+                    <span className="flex justify-start z-10 m-2 font-[Montserrat]">
+                      {movie.release_date}
+                    </span>
+                  </div>
                 </div>
               ))
             : shows.length > 0
             ? shows.map((show) => (
-                <div className={`m-3 bg-stone-50	 rounded-2xl p-2`} key={show.id}>
+                <div
+                  className={`m-3 bg-stone-50	 rounded-2xl p-2`}
+                  key={show.id}
+                >
                   <button
-                    onClick={() => setDetails({
-                      id: show.id,
-                      title: show.name,
-                      date: show.first_air_date,
-                      overview: show.overview,
-                      poster: show.poster_path
-                    })}
+                    onClick={() =>
+                      setDetails({
+                        id: show.id,
+                        title: show.name,
+                        date: show.first_air_date,
+                        overview: show.overview,
+                        poster: show.poster_path,
+                        backdrop: show.backdrop_path,
+                      })
+                    }
                     target="_blank"
                   >
                     <img
@@ -147,7 +159,6 @@ function Movies({ movies, shows, setCurrentPage, loading, setDetails }) {
           ""
         )}
       </div>
-      
     </div>
   );
 }
