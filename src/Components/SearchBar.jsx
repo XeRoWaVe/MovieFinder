@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 
 const SearchBar = ({
   setSearch,
@@ -7,15 +7,18 @@ const SearchBar = ({
   shows,
   getMovies,
   getShows,
+  searchRef
 }) => {
   const [input, setInput] = useState("");
-
-  const handleClick = () => {
+  const handleSubmit = (e) => {
+    e.preventDefault()
     setSearch(input);
     setSelectedFilters("");
     setInput("");
   };
-
+  useEffect(() => {
+    searchRef.current.focus()
+  }, [])
   return (
     <>
       <div className="flex">
@@ -50,21 +53,22 @@ const SearchBar = ({
           </button>
         )}
       </div>
-      <div className=" flex items-center justify-center">
+      <form onSubmit={handleSubmit} className=" flex items-center justify-center">
         <input
+          ref={searchRef}
           type="text"
           placeholder="Search..."
           value={input}
           onChange={(e) => setInput(e.target.value)}
           className="border-2 shadow-lg rounded-2xl w-[50vw] h-[5vh] p-3 m-4 bg-stone-50	  hover:shadow-black hover:shadow-md hover:opacity-25 focus:opacity-100 focus:shadow-xl hover:transition-transform "
         />
-        <button
+        {/* <button
           onClick={handleClick}
           className=" border-black rounded-2xl h-[7vh] p-2 bg-stone-50 hover:shadow-sm hover:border-2"
         >
           Search
-        </button>
-      </div>
+        </button> */}
+      </form>
     </>
   );
 };

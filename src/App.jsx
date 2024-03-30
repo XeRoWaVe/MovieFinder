@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import Header from "./Components/Header";
 import SearchBar from "./Components/SearchBar";
 import Movies from "./Components/Movies";
@@ -19,6 +19,7 @@ export default function App() {
   const [isLoading, setIsloading] = useState(false); // Boolean of loading state]
   const [details, setDetails] = useState(null);
   const [blur, setBlur] = useState("");
+  const searchRef = useRef(null)
 
   const encodedFilter = encodeURIComponent(selectedFilters); // Encoded string of selected filters
   useEffect(() => {
@@ -203,6 +204,7 @@ export default function App() {
             shows={shows}
             getShows={getShows}
             getMovies={getMovies}
+            searchRef={searchRef}
           />
           {!!filters && (
             <Filters
@@ -253,6 +255,7 @@ export default function App() {
           shows={shows}
           getShows={getShows}
           getMovies={getMovies}
+          searchRef={searchRef}
         />
         {!!filters && (
           <Filters
