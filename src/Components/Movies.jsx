@@ -41,11 +41,7 @@ function Movies({ movies, shows, setCurrentPage, loading, setDetails }) {
         <div className="grid grid-cols-10 m-4">
           {movies.length > 0
             ? movies.map((movie) => (
-                <div className="relative flex justify-center items-center">
-                  <div
-                    className={`m-3 bg-stone-50	z-0  rounded-2xl p-2`}
-                    key={movie.id}
-                  >
+                <div key={movie.id} className="relative flex justify-center items-center m-2">
                     <button
                       onClick={() =>
                         setDetails({
@@ -61,19 +57,18 @@ function Movies({ movies, shows, setCurrentPage, loading, setDetails }) {
                       target="_blank"
                     >
                       <img
-                        className="rounded-2xl mb-6 z-10 shadow-lg hover:shadow-2xl transition duration-500 ease-in-out transform hover:-translate-y-2 hover:scale-110
+                        className="rounded-2xl z-10 shadow-lg hover:shadow-2xl transition duration-500 ease-in-out transform hover:-translate-y-2 hover:scale-110
                       active:translate-y-[5.2rem] active:scale-130"
                         src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`}
                         alt={movie.title}
                       />
                     </button>
-                    <span className="flex justify-center z-10 line-clamp-2 text-md font-[Montserrat] font-bold tracking-wide">
+                    {/* <span className="flex justify-center z-10 line-clamp-1 text-white text-md font-[Montserrat] font-bold ">
                       {movie.title}
-                    </span>
-                    <span className="flex justify-start z-10 m-2 font-[Montserrat]">
+                    </span> */}
+                    {/* <span className="flex justify-center z-10  font-[Montserrat]">
                       {movie.release_date}
-                    </span>
-                  </div>
+                    </span> */}
                 </div>
               ))
             : shows.length > 0

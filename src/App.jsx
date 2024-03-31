@@ -8,7 +8,6 @@ import { options } from "./util";
 
 export default function App() {
   // const [state, dispatch] = useReducer(reducer)
-  const [init, setInit] = useState(false);
   const [movies, setMovies] = useState([]); // Array of movies from API
   const [shows, setShows] = useState([]); // Array of shows from API
   const [filters, setFilters] = useState([]); // Array of filters from API, either movies or shows
@@ -19,9 +18,52 @@ export default function App() {
   const [isLoading, setIsloading] = useState(false); // Boolean of loading state]
   const [details, setDetails] = useState(null);
   const [blur, setBlur] = useState("");
-  const searchRef = useRef(null)
+  const searchRef = useRef(null);
+  const [loggedIn, setLoggedIn] = useState(null);
+  const [token, setToken] = useState("");
 
   const encodedFilter = encodeURIComponent(selectedFilters); // Encoded string of selected filters
+
+  //  const getToken = async () => {
+  //         const data = await fetch(`https://api.themoviedb.org/3/authentication/token/new`, {
+  //         method: 'GET',
+  //         headers: {
+  //           accept: 'application/json',
+  //           Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIwMmNhYWMxM2QzM2FiNGY2NTczZWZhZjc3MmMyNmJjMyIsInN1YiI6IjY1MDA2NjUxMWJmMjY2MDExYzc4MjU4NSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.mfZLaDd8VJTN9sSVGADmpLH44Ph3Wy-n7U3eAI1y108`
+  //         }
+  //       })
+  //       const token = await data.json()
+  //       console.log(token)
+  //       const requestToken = token.request_token
+  //       setToken(requestToken)
+  //       localStorage.setItem('request_token', `${requestToken}`)
+  //       window.location = `https://www.themoviedb.org/authenticate/${requestToken}?redirect_to=http://localhost:5173/approved
+  //       `
+  //     }
+
+  // const getSession = async () => {
+  //   if (token) {
+  //     return;
+  //   } else {
+  //     const data = await fetch(
+  //       `https://api.themoviedb.org/3/authentication/guest_session/new`,
+  //       {
+  //         method: "GET",
+  //         headers: {
+  //           accept: "application/json",
+  //           Authorization:
+  //             "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIwMmNhYWMxM2QzM2FiNGY2NTczZWZhZjc3MmMyNmJjMyIsInN1YiI6IjY1MDA2NjUxMWJmMjY2MDExYzc4MjU4NSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.mfZLaDd8VJTN9sSVGADmpLH44Ph3Wy-n7U3eAI1y108",
+  //         },
+  //       }
+  //     );
+  //     const response = await data.json();
+  //     setToken(response.guest_session_id);
+  //     console.log(response)
+  //   }
+  // };
+
+  console.log(token);
+
   useEffect(() => {
     // blur effect when viewing details via portal
     if (details === null) {
@@ -169,6 +211,7 @@ export default function App() {
           getMovies={getMovies}
           movies={movies}
           shows={shows}
+          
         />
         {!!details &&
           createPortal(
@@ -190,7 +233,7 @@ export default function App() {
                 />
                 <h1 className="font-bold">{details.title}</h1>
                 <p className="">{details.overview}</p>
-                <h3 className="">{details.date}</h3>
+                <span className="">{details.date}</span>
               </button>
             </div>,
 
@@ -227,12 +270,13 @@ export default function App() {
       </button>
     );
   return (
-    <div>
+    <>
       <Header
         getShows={getShows}
         getMovies={getMovies}
         movies={movies}
         shows={shows}
+       
       />
       {!!details &&
         createPortal(
@@ -275,6 +319,6 @@ export default function App() {
           setDetails={setDetails}
         />
       </div>
-    </div>
+    </>
   );
 }
