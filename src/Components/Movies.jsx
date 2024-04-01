@@ -41,7 +41,8 @@ function Movies({ movies, shows, setCurrentPage, loading, setDetails }) {
         <div className="grid grid-cols-10 m-4">
           {movies.length > 0
             ? movies.map((movie) => (
-                <div key={movie.id} className="relative flex justify-center items-center m-2">
+              <div key={movie.id} className="relative rounded-2xl flex justify-center items-center p-2 m-2">
+                <div className="">
                     <button
                       onClick={() =>
                         setDetails({
@@ -63,18 +64,20 @@ function Movies({ movies, shows, setCurrentPage, loading, setDetails }) {
                         alt={movie.title}
                       />
                     </button>
-                    {/* <span className="flex justify-center z-10 line-clamp-1 text-white text-md font-[Montserrat] font-bold ">
+                    <span className="flex justify-center z-10 p-1 line-clamp-1 text-lg text-md font-bold ">
                       {movie.title}
-                    </span> */}
-                    {/* <span className="flex justify-center z-10  font-[Montserrat]">
+                    </span>
+                    <span className="flex justify-center z-10 p-1 font-bold font-[Montserrat]">
                       {movie.release_date}
-                    </span> */}
+                    </span>
                 </div>
+              </div>
               ))
             : shows.length > 0
             ? shows.map((show) => (
+              <div className="relative rounded-2xl flex justify-center items-center p-2 m-2">
                 <div
-                  className={`m-3 bg-stone-50	 rounded-2xl p-2`}
+                  className={``}
                   key={show.id}
                 >
                   <button
@@ -96,13 +99,14 @@ function Movies({ movies, shows, setCurrentPage, loading, setDetails }) {
                       alt={show.name}
                     />
                   </button>
-                  <span className="flex justify-center line-clamp-2 text-md font-[Montserrat] font-bold tracking-wide">
+                  <span className="flex justify-center z-10 p-1 line-clamp-1 text-lg text-md font-bold ">
                     {show.name}
                   </span>
-                  <span className="flex justify-start m-2 font-[Montserrat]">
+                  <span className="flex justify-center z-10 p-1 font-bold font-[Montserrat]">
                     {show.first_air_date}
                   </span>
                 </div>
+              </div>
               ))
             : ""}
         </div>

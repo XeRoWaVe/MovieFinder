@@ -211,7 +211,6 @@ export default function App() {
           getMovies={getMovies}
           movies={movies}
           shows={shows}
-          
         />
         {!!details &&
           createPortal(
