@@ -1,12 +1,7 @@
-import React, { useEffect, useRef, useState } from "react";
-import { createPortal } from "react-dom";
-import { useDraggable } from "react-use-draggable-scroll";
+import React, { useEffect, useState } from "react";
 
 function Movies({ movies, shows, setCurrentPage, loading, setDetails }) {
   const [stickyClass, setStickyClass] = useState("opacity-0");
-
-  // const ref = useRef(null)
-  // const {events} = useDraggable(ref)
   const moviesCoded = encodeURIComponent(movies.title);
   const showsCoded = encodeURIComponent(shows.name);
 
@@ -41,8 +36,11 @@ function Movies({ movies, shows, setCurrentPage, loading, setDetails }) {
         <div className="grid grid-cols-10 m-4">
           {movies.length > 0
             ? movies.map((movie) => (
-              <div key={movie.id} className="relative rounded-2xl flex justify-center items-center p-2 m-2">
-                <div className="">
+                <div
+                  key={movie.id}
+                  className="relative rounded-2xl flex justify-center items-center p-2 m-2"
+                >
+                  <div className="bg-gray-300 rounded-2xl shadow-inner shadow-black">
                     <button
                       onClick={() =>
                         setDetails({
@@ -58,55 +56,52 @@ function Movies({ movies, shows, setCurrentPage, loading, setDetails }) {
                       target="_blank"
                     >
                       <img
-                        className="rounded-2xl z-10 shadow-lg hover:shadow-2xl transition duration-500 ease-in-out transform hover:-translate-y-2 hover:scale-110
-                      active:translate-y-[5.2rem] active:scale-130"
+                        className="rounded-2xl z-10 shadow-lg hover:shadow-2xl transition duration-500 ease-in-out transform hover:scale-100
+                      active:translate-y-[4.7rem]"
                         src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`}
                         alt={movie.title}
                       />
                     </button>
-                    <span className="flex justify-center z-10 p-1 line-clamp-1 text-lg text-md font-bold ">
+                    <span className="flex justify-center z-10 p-1 line-clamp-1 text-wrap text-lg text-md font-bold ">
                       {movie.title}
                     </span>
                     <span className="flex justify-center z-10 p-1 font-bold font-[Montserrat]">
                       {movie.release_date}
                     </span>
+                  </div>
                 </div>
-              </div>
               ))
             : shows.length > 0
             ? shows.map((show) => (
-              <div className="relative rounded-2xl flex justify-center items-center p-2 m-2">
-                <div
-                  className={``}
-                  key={show.id}
-                >
-                  <button
-                    onClick={() =>
-                      setDetails({
-                        id: show.id,
-                        title: show.name,
-                        date: show.first_air_date,
-                        overview: show.overview,
-                        poster: show.poster_path,
-                        backdrop: show.backdrop_path,
-                      })
-                    }
-                    target="_blank"
-                  >
-                    <img
-                      className="rounded-2xl mb-6 shadow-lg hover:shadow-2xl transition duration-500 ease-in-out transform hover:-translate-y-1 hover:scale-110 active:translate-y-[5.2rem] active:scale-130"
-                      src={`https://image.tmdb.org/t/p/w500/${show.poster_path}`}
-                      alt={show.name}
-                    />
-                  </button>
-                  <span className="flex justify-center z-10 p-1 line-clamp-1 text-lg text-md font-bold ">
-                    {show.name}
-                  </span>
-                  <span className="flex justify-center z-10 p-1 font-bold font-[Montserrat]">
-                    {show.first_air_date}
-                  </span>
+                <div className="relative rounded-2xl flex justify-center items-center p-2 m-2">
+                  <div className={``} key={show.id}>
+                    <button
+                      onClick={() =>
+                        setDetails({
+                          id: show.id,
+                          title: show.name,
+                          date: show.first_air_date,
+                          overview: show.overview,
+                          poster: show.poster_path,
+                          backdrop: show.backdrop_path,
+                        })
+                      }
+                      target="_blank"
+                    >
+                      <img
+                        className="rounded-2xl mb-6 shadow-lg hover:shadow-2xl transition duration-500 ease-in-out transform hover:-translate-y-1 hover:scale-110 active:translate-y-[5.2rem] active:scale-130"
+                        src={`https://image.tmdb.org/t/p/w500/${show.poster_path}`}
+                        alt={show.name}
+                      />
+                    </button>
+                    <span className="flex justify-center z-10 p-1 line-clamp-1 text-lg text-md font-bold ">
+                      {show.name}
+                    </span>
+                    <span className="flex justify-center z-10 p-1 font-bold font-[Montserrat]">
+                      {show.first_air_date}
+                    </span>
+                  </div>
                 </div>
-              </div>
               ))
             : ""}
         </div>

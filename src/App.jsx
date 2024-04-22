@@ -19,50 +19,12 @@ export default function App() {
   const [details, setDetails] = useState(null);
   const [blur, setBlur] = useState("");
   const searchRef = useRef(null);
-  const [loggedIn, setLoggedIn] = useState(null);
-  const [token, setToken] = useState("");
+  const [movieList, setMovieList] = useState("");
+  const [showList, setShowList] = useState('')
 
   const encodedFilter = encodeURIComponent(selectedFilters); // Encoded string of selected filters
 
-  //  const getToken = async () => {
-  //         const data = await fetch(`https://api.themoviedb.org/3/authentication/token/new`, {
-  //         method: 'GET',
-  //         headers: {
-  //           accept: 'application/json',
-  //           Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIwMmNhYWMxM2QzM2FiNGY2NTczZWZhZjc3MmMyNmJjMyIsInN1YiI6IjY1MDA2NjUxMWJmMjY2MDExYzc4MjU4NSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.mfZLaDd8VJTN9sSVGADmpLH44Ph3Wy-n7U3eAI1y108`
-  //         }
-  //       })
-  //       const token = await data.json()
-  //       console.log(token)
-  //       const requestToken = token.request_token
-  //       setToken(requestToken)
-  //       localStorage.setItem('request_token', `${requestToken}`)
-  //       window.location = `https://www.themoviedb.org/authenticate/${requestToken}?redirect_to=http://localhost:5173/approved
-  //       `
-  //     }
-
-  // const getSession = async () => {
-  //   if (token) {
-  //     return;
-  //   } else {
-  //     const data = await fetch(
-  //       `https://api.themoviedb.org/3/authentication/guest_session/new`,
-  //       {
-  //         method: "GET",
-  //         headers: {
-  //           accept: "application/json",
-  //           Authorization:
-  //             "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIwMmNhYWMxM2QzM2FiNGY2NTczZWZhZjc3MmMyNmJjMyIsInN1YiI6IjY1MDA2NjUxMWJmMjY2MDExYzc4MjU4NSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.mfZLaDd8VJTN9sSVGADmpLH44Ph3Wy-n7U3eAI1y108",
-  //         },
-  //       }
-  //     );
-  //     const response = await data.json();
-  //     setToken(response.guest_session_id);
-  //     console.log(response)
-  //   }
-  // };
-
-  console.log(token);
+  console.log(movieList);
 
   useEffect(() => {
     // blur effect when viewing details via portal
@@ -130,6 +92,7 @@ export default function App() {
       options
     );
     const movies = await data.json();
+    console.log(movies);
     const movieResults = movies.results;
     setShows([]);
     setPages(movies);
@@ -137,6 +100,53 @@ export default function App() {
     setIsloading(false);
     console.log(movies);
   };
+
+  const getMovieList = async () => {
+    if (shows.length > 0) {
+      setCurrentPage(1);
+    }
+    setIsloading(true);
+    const data = await fetch(
+      `https://api.themoviedb.org/3/movie/${movieList}?language=en-US&page=${currentPage}`,
+      options
+    );
+    const movies = await data.json();
+    console.log(movies);
+    const movieListResults = movies.results;
+    setShows([]);
+    setPages(movies);
+    setMovies(movieListResults);
+    setIsloading(false);
+  };
+
+  const getShowList = async () => {
+    if (movies.length > 0) {
+      setCurrentPage(1)
+    }
+    setIsloading(true)
+    const data = await fetch(`https://api.themoviedb.org/3/tv/${showList}?language=en-US&page=${currentPage}`, options);
+    const shows = await data.json()
+    const showListResults = shows.results
+    setMovies([])
+    setPages(shows)
+    setShows([])
+    setShows((p) => [...p, ...showListResults])
+    setIsloading(false)
+  }
+
+  useEffect(() => {
+    if (movieList === "") {
+      return;
+    }
+    getMovieList();
+  }, [movieList]);
+
+  useEffect(() => {
+    if (showList === '') {
+      return;
+    }
+    getShowList()
+  }, [showList])
 
   const filterMovies = async () => {
     // async function to use selected filters to fetch a sorted list of movies or shows
@@ -185,21 +195,26 @@ export default function App() {
     }
   };
 
-  // useEffect(() => {
-  //   getMovies()
-  //   movies.push(getShows())
-  // }, [])
-
   useEffect(() => {
     getSearchMovies();
   }, [search]);
 
   useEffect(() => {
+    if (showList) {
+      getShowList()
+      return
+    }
+    if (movieList) {
+      getMovieList();
+      return;
+    }
     if (movies.length > 0) {
       getMovies();
+      return;
     }
     if (shows.length > 0) {
       getShows();
+      return;
     }
   }, [currentPage]);
 
@@ -247,6 +262,10 @@ export default function App() {
             getShows={getShows}
             getMovies={getMovies}
             searchRef={searchRef}
+            setMovieList={setMovieList}
+            movieList={movieList}
+            setShowList={setShowList}
+            showList={showList}
           />
           {!!filters && (
             <Filters
@@ -275,7 +294,6 @@ export default function App() {
         getMovies={getMovies}
         movies={movies}
         shows={shows}
-       
       />
       {!!details &&
         createPortal(
@@ -299,6 +317,10 @@ export default function App() {
           getShows={getShows}
           getMovies={getMovies}
           searchRef={searchRef}
+          setMovieList={setMovieList}
+          movieList={movieList}
+          setShowList={setShowList}
+          showList={showList}
         />
         {!!filters && (
           <Filters

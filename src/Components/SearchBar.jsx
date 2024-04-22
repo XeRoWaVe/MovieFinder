@@ -1,4 +1,7 @@
 import { useState, useRef, useEffect } from "react";
+import MovieList from "./MovieList";
+import { Movie } from "@mui/icons-material";
+import ShowList from "./ShowList";
 
 const SearchBar = ({
   setSearch,
@@ -7,53 +10,87 @@ const SearchBar = ({
   shows,
   getMovies,
   getShows,
-  searchRef
+  searchRef,
+  setMovieList,
+  movieList,
+  setShowList,
+  showList
 }) => {
   const [input, setInput] = useState("");
+  const [listVisible, setListVisible] = useState(false);
+  const [showListVisible, setShowListVisible] = useState(false)
+
+  const handleMoviesEnter = () => { // mouse event for movies
+    setListVisible(true); 
+  };
+
+  const handleMoviesLeave = () => {
+    setListVisible(false);
+  };
+
+  const handleShowsEnter = () => { // mouse event for shows
+    setShowListVisible(true)
+  }
+
+  const handleShowsLeave = () => {
+    setShowListVisible(false)
+  }
+
   const handleSubmit = (e) => {
-    e.preventDefault()
+    e.preventDefault();
     setSearch(input);
     setSelectedFilters("");
     setInput("");
   };
+
   useEffect(() => {
-    searchRef.current.focus()
-  }, [])
+    searchRef.current.focus();
+  }, []);
   return (
     <>
       <div className="flex">
-        {movies.length > 0 ? (
+        <div
+          className="mx-auto flex flex-col"
+          onMouseEnter={handleMoviesEnter}
+          onMouseLeave={handleMoviesLeave}
+        >
           <button
-            className="mx-auto float-left  rounded-lg bg-green-400 p-2"
+            className="mx-auto float-left  rounded-lg bg-indigo-500 text-white font-bold p-2"
             onClick={getMovies}
           >
             Movies
           </button>
-        ) : (
-          <button
-            className="mx-auto p-2 active:shadow-none active:bg-green-400 rounded-lg bg-blue-400  hover:shadow-black hover:shadow-sm"
-            onClick={getMovies}
-          >
-            Movies
-          </button>
-        )}
-        {shows.length > 0 ? (
-          <button
-            className="mx-auto float-left bg-green-400 p-2 rounded-lg"
-            onClick={getShows}
-          >
-            Shows
-          </button>
-        ) : (
-          <button
-            className="mx-auto hover:shadow-black hover:shadow-sm p-2 rounded-lg bg-blue-400 active:bg-green-400 active:shadow-none"
-            onClick={getShows}
-          >
-            Shows
-          </button>
-        )}
+          {listVisible && <MovieList setMovieList={setMovieList} />}
+        </div>
+          <div className="mx-auto flex flex-col"
+            onMouseEnter={handleShowsEnter}
+            onMouseLeave={handleShowsLeave}>
+              <button
+          className="mx-auto float-left bg-indigo-500 text-white font-bold p-2 rounded-lg"
+          onClick={getShows}
+        >
+          Shows
+        </button>
+        {showListVisible && <ShowList setShowList={setShowList} />}
+          </div>
+
+        
       </div>
-      <form onSubmit={handleSubmit} className=" flex items-center justify-center">
+      {!!movieList ? (
+        <div className="flex justify-center">
+          <h1 className="bg-indigo-500 cursor-default text-white font-bold p-2">Movie List: {movieList}</h1>
+        </div>
+      ) : !!showList ? (
+        <div className="flex justify-center">
+          <h1 className="bg-indigo-500 cursor-default text-white font-bold p-2">Show List: {showList}</h1>
+        </div>
+      ) : (
+        ""
+      )}
+      <form
+        onSubmit={handleSubmit}
+        className=" flex items-center justify-center"
+      >
         <input
           ref={searchRef}
           type="text"
