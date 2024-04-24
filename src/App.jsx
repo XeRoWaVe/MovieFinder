@@ -4,7 +4,7 @@ import SearchBar from "./Components/SearchBar";
 import Movies from "./Components/Movies";
 import Filters from "./Components/Filters";
 import { createPortal } from "react-dom";
-import { options } from "./util";
+import { options } from "./utility";
 
 export default function App() {
   // const [state, dispatch] = useReducer(reducer)
@@ -237,15 +237,11 @@ export default function App() {
               className={`fixed bg-blue-500 bg-blend-multiply inset-1/4  rounded-2xl bg-cover transition-opacity  text-white`}
             >
               <button
-                className="relative"
+                className="relative flex flex-col items-center pt-80"
                 type="button"
                 onClick={() => setDetails(null)}
               >
-                <img
-                  className=""
-                  src={`https://image.tmdb.org/t/p/w185/${details.poster}`}
-                />
-                <h1 className="font-bold">{details.title}</h1>
+                <h1 className="font-bold text-3xl">{details.title}</h1>
                 <p className="">{details.overview}</p>
                 <span className="">{details.date}</span>
               </button>

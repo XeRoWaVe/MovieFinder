@@ -1,5 +1,3 @@
-import Select from "react-select";
-import { useState } from "react";
 import Button from "./Button";
 
 const Filters = ({

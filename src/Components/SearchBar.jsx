@@ -1,6 +1,5 @@
 import { useState, useRef, useEffect } from "react";
 import MovieList from "./MovieList";
-import { Movie } from "@mui/icons-material";
 import ShowList from "./ShowList";
 
 const SearchBar = ({

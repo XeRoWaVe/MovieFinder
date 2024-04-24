@@ -1,5 +1,3 @@
-import InsertEmoticonIcon from "@mui/icons-material/InsertEmoticon";
-import DeleteIcon from "@mui/icons-material/Delete";
 
 const Header = () => {
   return (
