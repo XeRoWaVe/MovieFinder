@@ -4,7 +4,7 @@ import SearchBar from "./Components/SearchBar";
 import Movies from "./Components/Movies";
 import Filters from "./Components/Filters";
 import { createPortal } from "react-dom";
-import { options } from "./utility";
+import { options } from "../utility";
 
 export default function App() {
   // const [state, dispatch] = useReducer(reducer)
